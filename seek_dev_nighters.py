@@ -25,13 +25,18 @@ def is_midnighter(unix_timestamp, timezone_name):
 
 
 def get_midnighter_usernames(attempts):
-    #FIXME: implement properly
-    return [attempt['username'] for attempt in attempts]
+    usernames = []
+    for attempt in attempts:
+        timestamp = attempt['timestamp']
+        timezone = attempt['timezone']
+        if timestamp and timezone and is_midnighter(timestamp, timezone):
+            usernames.append(attempt['username'])
+    return usernames
 
 
 if __name__ == '__main__':
-  attempt_batches = load_attempts()
-  for batch in attempt_batches:
-      midnighters = get_midnighter_usernames(batch)
-      for username in midnighters:
-          print(username)
+    attempt_batches = load_attempts()
+    for batch in attempt_batches:
+        midnighters = get_midnighter_usernames(batch)
+        for username in midnighters:
+            print(username)

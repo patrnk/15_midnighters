@@ -42,6 +42,19 @@ class MidNightersTestCase(unittest.TestCase):
             output = seek_dev_nighters.is_midnighter(*test_input)
             self.assertFalse(output)
 
+    @patch.object(seek_dev_nighters, 'is_midnighter', side_effect=[True, False, True, True])
+    def test_get_midnighter_usernames_returns_correct_usernames(self, _):
+        test_input = [
+            {'username': 1, 'timestamp': 1, 'timezone': 1},
+            {'username': 2, 'timestamp': 1, 'timezone': 1},
+            {'username': 3, 'timestamp': 1, 'timezone': 1},
+            {'username': 4, 'timestamp': 1, 'timezone': 1},
+            {'username': 5, 'timestamp': None, 'timezone': 1},
+        ]
+        expected_output = [1, 3, 4]
+        output = seek_dev_nighters.get_midnighter_usernames(test_input)
+        self.assertEqual(output, expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()
