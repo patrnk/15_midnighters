@@ -21,6 +21,27 @@ class MidNightersTestCase(unittest.TestCase):
             expected_output = self.fixture[batch_number]['records']
             self.assertEqual(batch, expected_output)
 
+    def test_is_midnighter_returns_true(self):
+        test_inputs = [
+            (1501362923.128152, 'Europe/Moscow'),  # 0 hours
+            (1501464923.129152, 'Europe/Moscow'),  # 4 hours
+            (1501210889.0, 'Europe/Moscow'),  # 6 hours
+            (1501214889.0, 'UTC'),  # 7 in Moscow, 4 in UTC
+        ]
+        for test_input in test_inputs:
+            output = seek_dev_nighters.is_midnighter(*test_input)
+            self.assertTrue(output)
+
+    def test_is_midnighter_returns_false(self):
+        test_inputs = [
+            (1501361923.129152, 'Europe/Moscow'),  # 23 hours
+            (1501361923.129152, 'UTC'),  # 20 hours
+            (1501214889.0, 'Europe/Moscow'),  # 7 hours
+        ]
+        for test_input in test_inputs:
+            output = seek_dev_nighters.is_midnighter(*test_input)
+            self.assertFalse(output)
+
 
 if __name__ == '__main__':
     unittest.main()

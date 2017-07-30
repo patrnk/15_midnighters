@@ -1,4 +1,7 @@
+from datetime import datetime
+
 import requests
+import pytz
 
 
 def load_attempts():
@@ -11,6 +14,14 @@ def load_attempts():
         params['page'] = page_number
         page = requests.get(solution_attempts_url, params).json()
         yield page['records']
+
+
+def is_midnighter(unix_timestamp, timezone_name):
+    nighttime_hours = (0, 6)
+    utc_datetime = datetime.utcfromtimestamp(unix_timestamp).replace(tzinfo=pytz.utc)
+    user_timezone = pytz.timezone(timezone_name)
+    user_time = utc_datetime.astimezone(user_timezone)
+    return nighttime_hours[0] <= user_time.hour <= nighttime_hours[1]
 
 
 def get_midnighter_usernames(attempts):
