@@ -8,7 +8,7 @@ import seek_dev_nighters
 class MidNightersTestCase(unittest.TestCase):
 
     def setUp(self):
-        with open('solution_attempts_fixture.json') as fixture_file:
+        with open('fixtures/solution_attempts_fixture.json') as fixture_file:
             self.fixture = json.load(fixture_file)
 
     @patch('seek_dev_nighters.requests.get')
